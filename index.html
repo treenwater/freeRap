@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <link href='https://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
+            <title>Socket.IO Karaoke Rap Battle</title>
+            <style>
+               *  { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Press Start 2P', cursive; }
+               body  { font: 13px Helvetica, Arial; color: darkslategrey }
+               header  {top:0; width:100%; background-color: aquamarine;text-align:center;height: 4em;padding-top:10px;}
+               iframe  { z-index:-9999;}
+               form  { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+               form input  { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+               form button  { width: 9%; background: rgb(130, 224, 255); border: none; padding:10px; }
+               #messages  { list-style-type: none; margin: 0; padding: 0; z-index: 9999; }
+               #messages li  { padding: 5px 10px; }
+               #messages li:nth-child(odd) { background: #eee; } 
+            </style>
+        </head>
+        <body>            
+            <header>
+            <h1>Welcome To The Karaoke Rap Battle</h1>
+            </header>
+            <!--
+            <iframe width="100%" height="640" src="https://www.youtube.com/embed/ZbbxA8a_M_s?rel=0&autoplay=1" frameborder="0" allowfullscreen autoplay></iframe>  
+            -->          
+            <ul id="messages"></ul>
+            <form action="">
+                <input id="m" aria-autocomplete="off" /><button>Send It</button>
+            </form>
+            <script src="/socket.io/socket.io.js"></script>
+            <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+            <script>
+                var socket = io();
+                $('form').submit(function(){
+                    socket.emit('chat message', $('#m').val());                        
+                    $('#m').val('');
+                    return false;
+                });
+                socket.on('chat message', function(msg){
+                    $('#messages').append($('<li>').text(msg));
+                });
+            </script>
+        </body>
+        
+    </html>
